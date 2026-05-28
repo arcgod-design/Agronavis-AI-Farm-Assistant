@@ -1,17 +1,11 @@
-import express, { Response } from 'express'
-import { FarmService } from '../services/farmService'
+import express, { Request, Response } from 'express';
+import { FarmService } from '../services/farmService';
 
-interface AuthenticatedRequest extends express.Request {
-  user?: {
-    id: string;
-    email: string;
-  };
-}
+const router = express.Router();
 
-const router = express.Router()
 
 // GET /api/farms - Get all farms for current farmer
-router.get('/', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     if (!farmerId) {
@@ -26,7 +20,7 @@ router.get('/', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // GET /api/farms/summary - Get farms summary with basic crop info
-router.get('/summary', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/summary', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     if (!farmerId) {
@@ -41,7 +35,7 @@ router.get('/summary', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // GET /api/farms/:id - Get specific farm by ID
-router.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.id
@@ -68,7 +62,7 @@ router.get('/:id', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // GET /api/farms/:id/details - Get farm with all related data
-router.get('/:id/details', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/:id/details', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.id
@@ -95,7 +89,7 @@ router.get('/:id/details', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // POST /api/farms - Create new farm
-router.post('/', async (req: AuthenticatedRequest, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     if (!farmerId) {
@@ -172,7 +166,7 @@ router.post('/', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // PUT /api/farms/:id - Update farm
-router.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
+router.put('/:id', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.id
@@ -256,7 +250,7 @@ router.put('/:id', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // DELETE /api/farms/:id - Delete farm
-router.delete('/:id', async (req: AuthenticatedRequest, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.id
@@ -279,7 +273,7 @@ router.delete('/:id', async (req: AuthenticatedRequest, res: Response) => {
 })
 
 // GET /api/farms/location/nearby - Find farms near coordinates
-router.get('/location/nearby', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/location/nearby', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     if (!farmerId) {
@@ -320,7 +314,7 @@ router.get('/location/nearby', async (req: AuthenticatedRequest, res: Response) 
 })
 
 // GET /api/farms/:farmId/fields - Get all fields for a farm
-router.get('/:farmId/fields', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/:farmId/fields', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.farmId
@@ -343,7 +337,7 @@ router.get('/:farmId/fields', async (req: AuthenticatedRequest, res: Response) =
 })
 
 // POST /api/farms/:farmId/fields - Add a new field to a farm
-router.post('/:farmId/fields', async (req: AuthenticatedRequest, res: Response) => {
+router.post('/:farmId/fields', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.farmId
@@ -399,7 +393,7 @@ router.post('/:farmId/fields', async (req: AuthenticatedRequest, res: Response) 
 })
 
 // DELETE /api/farms/:farmId/fields/:fieldId - Delete a field
-router.delete('/:farmId/fields/:fieldId', async (req: AuthenticatedRequest, res: Response) => {
+router.delete('/:farmId/fields/:fieldId', async (req: Request, res: Response) => {
   try {
     const farmerId = req.user?.id
     const farmId = req.params.farmId
