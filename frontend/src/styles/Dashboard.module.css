@@ -1069,7 +1069,7 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.cropListSkeleton {
+.crop-list-skeleton {
   display: flex;
   flex-direction: column;
   gap: 12px;

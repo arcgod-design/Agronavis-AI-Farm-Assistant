@@ -567,7 +567,7 @@ const Dashboard: React.FC<Props> = ({ activeTab, setActiveTab }) => {
           </div>
 
           {loading ? (
-            <div className={s.cropListSkeleton}>
+            <div className={s['crop-list-skeleton']}>
               <CropCardSkeleton />
               <CropCardSkeleton />
               <CropCardSkeleton />
