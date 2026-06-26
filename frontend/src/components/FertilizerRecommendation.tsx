@@ -86,12 +86,14 @@ const FertilizerRecommendation: React.FC<FertilizerRecommendationProps> = ({ far
             setHasCrops(response.data.hasCrops);
             setFarmData(response.data.farm);
 
-            // Save to cache
-            await saveRecommendation(farmId, response.data);
-            
-            // Update history list
-            const updatedHistory = await getRecommendationHistory(farmId);
-            setHistoryList(updatedHistory);
+            // Save to cache (isolate failure)
+            try {
+              await saveRecommendation(farmId, response.data);
+              const updatedHistory = await getRecommendationHistory(farmId);
+              setHistoryList(updatedHistory);
+            } catch (cacheWriteErr) {
+              console.error('Failed to write to cache', cacheWriteErr);
+            }
           } else {
             throw new Error('Failed to load fertilizer recommendations.');
           }
@@ -207,14 +209,14 @@ const FertilizerRecommendation: React.FC<FertilizerRecommendationProps> = ({ far
         <div className={styles.historySection}>
           <h4 className={styles.sectionTitle}>Previous Recommendations</h4>
           {historyList.map(item => (
-            <div key={item.id} className={styles.historyItem} onClick={() => loadHistoricalRecommendation(item)}>
+            <button key={item.id} className={styles.historyItem} onClick={() => loadHistoricalRecommendation(item)}>
               <span className={styles.historyDate}>
                 {new Date(item.timestamp).toLocaleDateString()} {new Date(item.timestamp).toLocaleTimeString()}
               </span>
               <span className={styles.historyDetails}>
                 {item.data.hasCrops ? `${item.data.recommendations?.length || 0} Crops Analyzed` : 'No Crops'}
               </span>
-            </div>
+            </button>
           ))}
         </div>
       ) : (
